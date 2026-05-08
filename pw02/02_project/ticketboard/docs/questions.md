@@ -9,13 +9,17 @@ Klasse: <Klasse>
 
 Welche Services haben Sie in Ihrer `compose.yaml` definiert?
 
-Antwort:
+Antwort: api, db, adminer, frontend
 
 ---
 
 Welche Aufgabe hat jeder Service in Ihrem System?
 
 Antwort:
+- api: Stellt die REST-API (FastAPI) für das TicketBoard bereit
+- db: PostgreSQL-Datenbank zur persistenten Speicherung der Tickets
+- adminer: Webinterface zur Administration und Verwaltung der Datenbank
+- frontend: nginx-Webserver, der die statische HTML-Oberfläche ausliefert
 
 ---
 
@@ -23,19 +27,19 @@ Antwort:
 
 Welchen Servicenamen verwendet die API, um die Datenbank zu erreichen?
 
-Antwort:
+Antwort: db
 
 ---
 
 Warum funktioniert `localhost` innerhalb eines Containers nicht für die Kommunikation mit anderen Services?
 
-Antwort:
+Antwort: localhost zeigt innerhalb eines Containers nur auf den Container selbst, nicht auf andere Container. Jeder Container hat seine eigene Netzwerk-Umgebung.
 
 ---
 
 Wie stellt Docker Compose sicher, dass sich Services gegenseitig finden können?
 
-Antwort:
+Antwort: Docker Compose erstellt ein eigenes DNS-Netzwerk. Alle Services sind über ihren Servicenamen aus der compose.yaml erreichbar.
 
 ---
 
@@ -43,20 +47,20 @@ Antwort:
 
 Über welche Ports sind folgende Services erreichbar?
 
-* API
-* Adminer
-* Frontend
+- API: 8000
+- Adminer: 8080
+- Frontend: 3000
 
-Antwort:
+Antwort: API auf 8000, Adminer auf 8080, Frontend auf 3000 (jeweils Host-Port)
 
 ---
 
 Welcher Unterschied besteht zwischen:
 
-* Container-Port
-* Host-Port
+- Container-Port
+- Host-Port
 
-Antwort:
+Antwort: Der Container-Port ist der Port innerhalb des Containers (z. B. 80 bei nginx). Der Host-Port ist der Port auf dem lokalen Rechner, der auf den Container-Port weiterleitet (z. B. 3000:80). Nur der Host-Port ist von ausserhalb des Docker-Netzwerks erreichbar.
 
 ---
 
@@ -64,19 +68,19 @@ Antwort:
 
 Was passiert mit den Daten, wenn ein Container ohne Volume gelöscht wird?
 
-Antwort:
+Antwort: Alle Daten im Container-Dateisystem gehen verloren, da sie nur temporär存在于 der beschreibbaren Schicht des Containers waren.
 
 ---
 
 Wie haben Sie die Persistenz für die Datenbank umgesetzt?
 
-Antwort:
+Antwort: Mit einem named Volume `postgres_data`, das im db-Service unter `/var/lib/postgresql/data` eingebunden ist.
 
 ---
 
 Warum ist ein Volume für die Datenbank notwendig?
 
-Antwort:
+Antwort: Damit die Datenbankdaten auch nach einem `docker compose down` oder Container-Neustart erhalten bleiben. Ohne Volume wären alle Daten beim Löschen des Containers verloren.
 
 ---
 
@@ -84,19 +88,19 @@ Antwort:
 
 Welche Elemente haben Sie in Ihrer `compose.yaml` definiert?
 
-Antwort:
+Antwort: services (api, db, adminer, frontend), volumes (postgres_data), sowie build, image, ports, environment, env_file, depends_on und volumes-Mounts pro Service.
 
 ---
 
 Welche Umgebungsvariablen sind für die Datenbank-Verbindung notwendig?
 
-Antwort:
+Antwort: POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD (für die initiale DB-Konfiguration). Die Verbindungsdaten werden aus der .env-Datei geladen.
 
 ---
 
 Wofür wird `depends_on` verwendet?
 
-Antwort:
+Antwort: `depends_on` legt die Startreihenfolge der Container fest. Der api-Container startet erst, nachdem der db-Container gestartet wurde. Es wartet jedoch nicht auf die vollständige Verfügbarkeit der Datenbank.
 
 ---
 
@@ -104,19 +108,19 @@ Antwort:
 
 Hat das System beim ersten Start vollständig funktioniert?
 
-Antwort:
+Antwort: Ja, alle Services starten und sind erreichbar. Die Datenbankverbindung kann konfiguriert werden.
 
 ---
 
 Welche Probleme sind aufgetreten?
 
-Antwort:
+Antwort: Keine nennenswerten Probleme, da die Dockerfiles bereits vollständig und funktionsfähig waren.
 
 ---
 
 Wie haben Sie diese Probleme gelöst?
 
-Antwort:
+Antwort: -
 
 ---
 
@@ -124,9 +128,7 @@ Antwort:
 
 Beschreiben Sie kurz den Datenfluss in Ihrem System.
 
-(Beispiel: Frontend → API → Datenbank)
-
-Antwort:
+Antwort: Browser → Frontend (nginx, Port 3000) → API (FastAPI, Port 8000) → DB (PostgreSQL, Port 5432). Adminer greift direkt auf die DB zu.
 
 ---
 
@@ -136,7 +138,7 @@ Was passiert beim Befehl:
 docker compose down
 ```
 
-Antwort:
+Antwort: Alle Container werden gestoppt und entfernt. Das definierte Volume `postgres_data` bleibt erhalten. Das Standard-Netzwerk wird ebenfalls entfernt.
 
 ---
 
@@ -144,10 +146,10 @@ Antwort:
 
 Was war für Sie heute die wichtigste Erkenntnis?
 
-Antwort:
+Antwort: -
 
 ---
 
 Was war schwierig oder noch unklar?
 
-Antwort:
+Antwort: -

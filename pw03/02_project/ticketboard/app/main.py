@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, text
+import os
 
 app = FastAPI(title="TicketBoard API")
 
@@ -15,8 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Hardcoded – wird in dieser Woche durch .env ersetzt!
-DATABASE_URL = "postgresql://ticketuser:secret@db:5432/ticketdb"
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL)
 
